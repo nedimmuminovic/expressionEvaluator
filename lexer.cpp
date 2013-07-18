@@ -1,3 +1,8 @@
+/*File:lexer.cpp
+ *- - - - - - - - - - -
+ *Description: Implements the lexer used for extracting operands and operators from a string
+ */
+
 #include "lexer.h"
 
 Lexer::Lexer(QString expression)
@@ -6,22 +11,22 @@ Lexer::Lexer(QString expression)
     this->expression=expression;
 }
 
-bool Lexer::hasMoreTokens()
+bool Lexer::hasMoreLexems()
 {
     return expressionIndex < expression.length();
 
 }
 
-QString Lexer::nextToken()
+QString Lexer::nextLexem()
 {
-    // remove space from user input
+    /* remove space from user input*/
     expression=expression.simplified();
     expression.replace(" ","");
 
-    // handles unary minus
+    /* handles unary minus*/
     expression=expression.replace("(-","(0-");
 
-    // handles unary minus at the begginig of expression by adding 0
+    /*handles unary minus at the begginig of expression by adding 0*/
     if (expression.indexOf("-")==0)
         expression="0"+expression;
 
@@ -36,6 +41,7 @@ QString Lexer::nextToken()
         int startIndex=expressionIndex;
 
         while(expressionIndex < expression.length() && (character.isLetterOrNumber() || character=='.')) {
+
             expressionIndex++;
             character=expression[expressionIndex];
         }
@@ -49,11 +55,4 @@ QString Lexer::nextToken()
 
 }
 
-/*
-QString Lexer::getTokenType(QString userInput) {
-
-    if (userInput.isDigit())
-        return "NUMBER";
-    }
-*/
 

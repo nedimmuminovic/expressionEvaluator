@@ -1,29 +1,26 @@
+/*File:expevaluator.cpp
+ *- - - - - - - - - - -
+ *Description: Implements the evaluation of mathematical expression containing operations +, -, *, /, ^, sin(), cos(),pi,e,variable assignments
+ */
+
 #include "expevaluator.h"
 
-/*
-            QMessageBox mBox;
-
-            mBox.setText(userLexem);
-            mBox.exec();
-*/
-
- QString expEvaluator::getLexem(int lexemIndex){
+QString expEvaluator::getLexem(int lexemIndex){
     return lexems.at(lexemIndex);
- }
+}
 
- void expEvaluator::removeLexem(){
+void expEvaluator::removeLexem(){
     lexems.removeFirst();
- }
+}
 
 bool expEvaluator::isOperator(QString userExpression) {
     return userExpression=="+" || userExpression=="-" || userExpression=="*"
             || userExpression=="/" || userExpression=="^";
 }
 
-
- void expEvaluator::setLexems(QString lexemValue) {
+void expEvaluator::setLexems(QString lexemValue) {
     lexems.append(lexemValue);
- }
+}
 
 double expEvaluator::evaluateExpression() {
 
@@ -34,117 +31,130 @@ double expEvaluator::evaluateExpression() {
     int  lexemPrecedence=0;
     int lexemAssociativity=0;
 
+
     if (lexems.length()==1)
         return lexems.at(0).toDouble();
 
-        for (int i = 0; i < lexems.size(); ++i) {
+    for (int i = 0; i < lexems.size(); ++i) {
 
-            userLexem=lexems.at(i);
-            lexemPrecedence=precedence.value(userLexem).first;
-            lexemAssociativity=precedence.value(userLexem).second;
-
-
-            if (userLexem.at(0).isDigit())
-                output.append(userLexem);
-
-            if (userLexem=="sin")
-                 stack.push(userLexem);
-
-            if (userLexem=="cos")
-                stack.push(userLexem);
-
-            if (isOperator(userLexem)) {
-
-                while ( !stack.empty() && isOperator(stack.top() ) )
-                {
-
-                    if (
-                            (lexemAssociativity==LEFT_ASSOC &&
-                             lexemPrecedence <= precedence.value(stack.top()).first)
-
-                            ||
-
-                            ( lexemAssociativity==RIGHT_ASSOC &&
-                              lexemPrecedence < precedence.value(stack.top()).first)
-                            ) {
+        userLexem=lexems.at(i);
+        lexemPrecedence=precedence.value(userLexem).first;
+        lexemAssociativity=precedence.value(userLexem).second;
 
 
-                        output.append(stack.pop());
-                        continue;
+        if (userLexem.at(0).isDigit())
+            output.append(userLexem);
 
-                    } //end if
+        else  if (userLexem=="sin")
+            stack.push(userLexem);
 
-                    break;
+        else  if (userLexem=="cos")
+            stack.push(userLexem);
 
-                } // end while
+        else if (isOperator(userLexem)) {
 
-                stack.push(userLexem);
+            while ( !stack.empty() && isOperator(stack.top() ) )
+            {
 
-            } //end of outer if
+                if (
+                        (lexemAssociativity==LEFT_ASSOC &&
+                         lexemPrecedence <= precedence.value(stack.top()).first)
 
-            if (userLexem=="("){
-                stack.push(userLexem);
-            }
+                        ||
 
-            if (userLexem==")") {
+                        ( lexemAssociativity==RIGHT_ASSOC &&
+                          lexemPrecedence < precedence.value(stack.top()).first)
+                        ) {
 
-                while (!stack.empty()  && stack.top() != "(")
+
                     output.append(stack.pop());
+                    continue;
 
-                stack.pop();
+                }
+
+                break;
 
             }
 
-        } // end for
-
-        while(!stack.empty() && stack.top() != "(" ) {
-            output.append(stack.pop());
+            stack.push(userLexem);
 
         }
 
-        QString lexem;
+        else if (userLexem=="("){
+            stack.push(userLexem);
+        }
+
+        else if (userLexem==")") {
+
+            while (!stack.empty()  && stack.top() != "(")
+                output.append(stack.pop());
+
+            stack.pop();
+
+        }
+
+    } // end for
+
+    while(!stack.empty() && stack.top() != "(" ) {
+        output.append(stack.pop());
+
+    }
+
+    QString lexem;
 
     // calculate reverse polish notation
     for (int i = 0; i < output.size(); ++i) {
 
-         lexem=output.at(i);
-        //double result=0.0;
+        lexem=output.at(i);
         if (output.at(i).at(0).isDigit())
             stack.push(output.at(i));
 
         if (isOperator(output.at(i))) {
-            double secondOperand;
-            double firstOperand;
-            secondOperand=stack.pop().toDouble();
-            firstOperand=stack.pop().toDouble();
+            double secondOperand=0.0;
+            double firstOperand=0.0;
+
+            if (stack.size()<2)
+            {
+
+                QMessageBox mBox;
+                mBox.setText("Check your expression and try again!");
+                mBox.exec();
+                return 0.0;
+
+            } else  {
+
+                secondOperand=stack.pop().toDouble();
+                firstOperand=stack.pop().toDouble();
+            }
+
 
             if (lexem=="+") {
-                answer=firstOperand+secondOperand;
+                answer=firstOperand + secondOperand;
                 stack.push(QString::number(answer));
             }
 
-            if (lexem=="*") {
-                answer=firstOperand*secondOperand;
+            else  if (lexem=="*") {
+                answer=firstOperand * secondOperand;
                 stack.push(QString::number(answer));
             }
 
-            if (lexem=="/") {
-                answer=firstOperand*secondOperand;
+            else  if (lexem=="/") {
+                answer=firstOperand / secondOperand;
                 stack.push(QString::number(answer));
             }
 
-            if (lexem=="-") {
-                answer=firstOperand-secondOperand;
+            else if (lexem=="-") {
+                answer=firstOperand - secondOperand;
                 stack.push(QString::number(answer));
             }
 
-            if (lexem=="^") {
+            else if (lexem=="^") {
                 answer=pow(firstOperand,secondOperand);
                 stack.push(QString::number(answer));
             }
 
 
-            } // end if operator
+        }
 
         if (lexem=="sin") {
             double result=0.0;
@@ -154,7 +164,7 @@ double expEvaluator::evaluateExpression() {
 
         }
 
-        if (lexem=="cos") {
+        else if (lexem=="cos") {
             double result=0.0;
             result=stack.pop().toDouble();
             answer=cos(result);
@@ -168,4 +178,4 @@ double expEvaluator::evaluateExpression() {
     lexems.clear();
 
     return answer;
-} // method end
+}

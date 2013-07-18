@@ -1,7 +1,11 @@
+/*File:dialog.cpp
+ *- - - - - - - - - - -
+ *Description: Implemenation of graphical user interface in Qt framework
+ */
+
 #include "dialog.h"
 #include "lexer.h"
 #include "expevaluator.h"
-
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -53,80 +57,68 @@ Dialog::~Dialog()
 // handles enter key press event
 void Dialog::keyPressEvent(QKeyEvent *event)
 {
-   if (event->key() == Qt::Key_Return){
+    if (event->key() == Qt::Key_Return){
 
-       QString expression=expressionInput->text();
+        QString expression=expressionInput->text();
 
-       int leftParenthesis=0;
-       int rightParenthesis=0;
-       leftParenthesis=expression.count("(");
-       rightParenthesis=expression.count(")");
+        int leftParenthesis=0;
+        int rightParenthesis=0;
+        leftParenthesis=expression.count("(");
+        rightParenthesis=expression.count(")");
 
-       if (leftParenthesis!=rightParenthesis) {
-           QMessageBox mBox;
-           mBox.setText("Parenthesis mismatch");
-           mBox.exec();
+        userVariables.insert("pi",3.14);
+        userVariables.insert("e",2.718);
 
-       } else {
+        if (leftParenthesis!=rightParenthesis) {
+            QMessageBox mBox;
+            mBox.setText("Parenthesis missmatch!");
+            mBox.exec();
 
-         QString lexem;
-    //QString result;
-       Lexer lexer(expressionInput->text());
-       expEvaluator userExp;
+        } else {
 
-       //static QMap <QString,double> userVariables;
-
-       while(lexer.hasMoreTokens()) {
-
-           lexem=lexer.nextToken();
-           //expressionOutput->append(lexem);
-           if (userVariables.contains(lexem))
-               userExp.setLexems(QString::number(userVariables.value(lexem)));
-               //userExp.lexems.append();
-           else
-               userExp.setLexems(lexem);
-               // userExp.lexems<<lexem;
-
-       } //end of while
-
-       if (userExp.getLexem(1)=="=")
-
-       {
-           QString variableName;
-           double variableValue;
-
-           variableName=userExp.getLexem(0);
-
-            userExp.removeLexem();
-            userExp.removeLexem();
-
-            variableValue=userExp.evaluateExpression();
-
-           userVariables.insert(variableName,variableValue);
-
-             }
+            QString lexem;
+            Lexer lexer(expressionInput->text());
+            expEvaluator userExp;
 
 
+            while(lexer.hasMoreLexems()) {
 
-QString answer=QString::number(userExp.evaluateExpression());
-expressionOutput->append(answer);
+                lexem=lexer.nextLexem();
 
-       /*
-       QString listSize=QString::number(userExp.lexems.size());
-       QMessageBox msgBox;
-       msgBox.setText(listSize);
-       msgBox.exec();
-        */
+                if (userVariables.contains(lexem))
+                    userExp.setLexems(QString::number(userVariables.value(lexem)));
+                else
+                    userExp.setLexems(lexem);
 
-   } //end of else
+            }
+
+            if (userExp.getLexem(1)=="=")
+
+            {
+                QString variableName;
+                double variableValue;
+
+                variableName=userExp.getLexem(0);
+
+                userExp.removeLexem();
+                userExp.removeLexem();
+
+                variableValue=userExp.evaluateExpression();
+
+                userVariables.insert(variableName,variableValue);
+
+            }
+
+            QString answer=QString::number(userExp.evaluateExpression());
+            expressionOutput->append(answer);
+
+
+        }
 
 
 
-  // if (event->key() == Qt::Key_Return)
-
-
+    }
 }
-   }
 
 // handles clear button click
 void Dialog::clearOutput() {
