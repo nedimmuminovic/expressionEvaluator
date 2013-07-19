@@ -24,7 +24,6 @@
     * Shunting yard converts infix mathematical expression into postfix mathematical notation
     *which is easier for a computer to evaluate.
     *Using stacks the postfix expression evaluates a result of calculation
-
  */
 
 class expEvaluator

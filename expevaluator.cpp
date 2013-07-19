@@ -24,13 +24,11 @@ void expEvaluator::setLexems(QString lexemValue) {
 
 double expEvaluator::evaluateExpression() {
 
-
     double answer=0.0;
     QString userLexem;
 
     int  lexemPrecedence=0;
     int lexemAssociativity=0;
-
 
     if (lexems.length()==1)
         return lexems.at(0).toDouble();
@@ -88,8 +86,12 @@ double expEvaluator::evaluateExpression() {
 
             while (!stack.empty()  && stack.top() != "(")
                 output.append(stack.pop());
-
             stack.pop();
+
+            if (stack.top()=="sin" || stack.top()=="cos") {
+                output.append(stack.top());
+                stack.pop();
+            }
 
         }
 
