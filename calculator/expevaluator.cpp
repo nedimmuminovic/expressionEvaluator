@@ -18,6 +18,17 @@ bool expEvaluator::isOperator(QString userExpression) {
             || userExpression=="/" || userExpression=="^";
 }
 
+bool expEvaluator::isFunction(QString userExpression) {
+    return  userExpression=="sin" || userExpression=="cos" || userExpression=="sqrt"
+            || userExpression=="log" || userExpression=="toRadians";
+
+}
+
+
+double expEvaluator::toRadians(double degrees) {
+    return degrees*0.017453;
+}
+
 void expEvaluator::setLexems(QString lexemValue) {
     lexems.append(lexemValue);
 }
@@ -43,10 +54,7 @@ double expEvaluator::evaluateExpression() {
         if (userLexem.at(0).isDigit())
             output.append(userLexem);
 
-        else  if (userLexem=="sin")
-            stack.push(userLexem);
-
-        else  if (userLexem=="cos")
+        else  if (isFunction(userLexem))
             stack.push(userLexem);
 
         else if (isOperator(userLexem)) {
@@ -88,7 +96,7 @@ double expEvaluator::evaluateExpression() {
                 output.append(stack.pop());
             stack.pop();
 
-            if (stack.top()=="sin" || stack.top()=="cos") {
+            if (isFunction(stack.top())) {
                 output.append(stack.top());
                 stack.pop();
             }
@@ -170,6 +178,30 @@ double expEvaluator::evaluateExpression() {
             double result=0.0;
             result=stack.pop().toDouble();
             answer=cos(result);
+            stack.push(QString::number(answer));
+
+        }
+
+        else if (lexem=="sqrt") {
+            double result=0.0;
+            result=stack.pop().toDouble();
+            answer=sqrt(result);
+            stack.push(QString::number(answer));
+
+        }
+
+        else if (lexem=="log") {
+            double result=0.0;
+            result=stack.pop().toDouble();
+            answer=log(result);
+            stack.push(QString::number(answer));
+
+        }
+
+        else if (lexem=="toRadians") {
+            double result=0.0;
+            result=stack.pop().toDouble();
+            answer=toRadians(result);
             stack.push(QString::number(answer));
 
         }

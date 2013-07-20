@@ -1,0 +1,16 @@
+Version 0.1
+First release
+
+Version 0.1.1
+- added constants pi and e
+- code commented
+- handling errors on malformed input
+
+Version 0.2
+- modified shunting yard algorithm so it evaluates correctly sin and cos functions
+
+Version 0.2.1
+- added functions sqrt,log,toRadians
+- user can use degrees by typing sin(toRadians(5)) 
+- added test case
+

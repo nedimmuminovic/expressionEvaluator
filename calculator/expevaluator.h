@@ -88,6 +88,28 @@ public:
 
     bool isOperator(QString userExpression);
 
+    /*Method: toRadians(double degrees)
+     *Usage:  toRadians(double)
+     *- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     * Used as a helper method for method evaluateExpression().
+     *By default sin and cos functions takes radians as arguments
+     *Using toRadians user can write expression in degrees which is then
+     *converted to radians.
+     *Example: toRadians(5)
+     */
+
+    double toRadians(double degrees);
+
+
+    /*Method: isFunction(QString userExpression)
+     *Usage:  isFunction(QString)
+     *- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     * Used as a helper method for method evaluateExpression().
+     *Checks is a current lexem one of defined functions:sin,cos...
+     */
+
+    bool isFunction(QString userExpression);
+
 private:
 
     /*Shunting yard algorithm assigns each lexem precedence (integer from 2 to 4) and associativity (0 is left associativity 1 is right associativity)*/
