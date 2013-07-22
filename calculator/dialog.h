@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMap>
 #include <QMessageBox>
+#include <QCompleter>
 
 //forward declaration
 class QLineEdit;
@@ -25,7 +26,14 @@ private:
     QPushButton* clearButton;
     QLineEdit* expressionInput;
     QTextEdit* expressionOutput;
+    QCompleter *completer;
+
+    /*holds variables declared by user */
     QMap <QString,double> userVariables;
+
+    /* holds list of functions for autocomplete*/
+    QStringList wordList ;
+
 
 
 protected:

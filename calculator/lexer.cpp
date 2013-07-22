@@ -5,7 +5,7 @@
 
 #include "lexer.h"
 
-Lexer::Lexer(QString expression)
+Lexer::Lexer(const QString &expression)
 {
     expressionIndex=0;
     this->expression=expression;

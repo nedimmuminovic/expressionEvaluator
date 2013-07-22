@@ -15,8 +15,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         dialog.cpp \
     lexer.cpp \
-    expevaluator.cpp
+    expevaluator.cpp \
 
 HEADERS  += dialog.h \
     lexer.h \
-    expevaluator.h
+    expevaluator.h \

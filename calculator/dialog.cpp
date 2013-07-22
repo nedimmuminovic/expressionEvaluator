@@ -31,6 +31,13 @@ Dialog::Dialog(QWidget *parent)
 
     expressionInput=new QLineEdit(tr("4+5-1*2"));
 
+
+    wordList << "sin(" << "cos(" << "sqrt(" << "log("<< "toRadians(";
+    completer=new QCompleter(wordList,this);
+
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+   expressionInput->setCompleter(completer);
+
     // adds widgets to the layout
     mainLayout->addWidget(expressionOutput);
     mainLayout->addWidget(expressionInput);
@@ -99,11 +106,12 @@ void Dialog::keyPressEvent(QKeyEvent *event)
                 double variableValue;
 
                 variableName=userExp.getLexem(0);
-
                 userExp.removeLexem();
                 userExp.removeLexem();
 
                 variableValue=userExp.evaluateExpression();
+
+                  //expressionOutput->append(variableName+"="+variableValue);
 
                 userVariables.insert(variableName,variableValue);
 

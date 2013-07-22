@@ -19,7 +19,7 @@ public:
      * Initializes a lexer object. Lexer stream comes from string str
      */
 
-    Lexer(QString expression);
+    Lexer(const QString  &expression);
 
     /*Method: hasMoreLexems()
      *Usage: if(lexer.hasMoreLexems) . . .
