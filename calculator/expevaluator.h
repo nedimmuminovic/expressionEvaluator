@@ -110,6 +110,15 @@ public:
 
     bool isFunction(QString userExpression);
 
+    /*Methods used to perform calculations of various functions
+     */
+
+    double calculateSqrt();
+    double calculateSin();
+    double calculateCos();
+    double calculateLog();
+
+
 private:
 
     /*Shunting yard algorithm assigns each lexem precedence (integer from 2 to 4) and associativity (0 is left associativity 1 is right associativity)*/

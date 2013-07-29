@@ -9,6 +9,10 @@ QString expEvaluator::getLexem(int lexemIndex){
     return lexems.at(lexemIndex);
 }
 
+void expEvaluator::setLexems(QString lexemValue) {
+    lexems.append(lexemValue);
+}
+
 void expEvaluator::removeLexem(){
     lexems.removeFirst();
 }
@@ -29,9 +33,45 @@ double expEvaluator::toRadians(double degrees) {
     return degrees*0.017453;
 }
 
-void expEvaluator::setLexems(QString lexemValue) {
-    lexems.append(lexemValue);
+double expEvaluator::calculateSqrt(){
+    double result=0.0;
+    double answer=0.0;
+    result=stack.pop().toDouble();
+    answer=sqrt(result);
+    stack.push(QString::number(answer));
+    return answer;
 }
+
+double expEvaluator::calculateSin(){
+    double result=0.0;
+    double answer=0.0;
+    result=stack.pop().toDouble();
+    answer=sin(result);
+    stack.push(QString::number(answer));
+    return answer;
+
+}
+
+double expEvaluator::calculateCos(){
+    double result=0.0;
+    double answer=0.0;
+    result=stack.pop().toDouble();
+    answer=cos(result);
+    stack.push(QString::number(answer));
+    return answer;
+
+}
+
+double expEvaluator::calculateLog(){
+    double result=0.0;
+    double answer=0.0;
+    result=stack.pop().toDouble();
+    answer=log(result);
+    stack.push(QString::number(answer));
+    return answer;
+
+}
+
 
 double expEvaluator::evaluateExpression() {
 
@@ -45,7 +85,6 @@ double expEvaluator::evaluateExpression() {
         return lexems.at(0).toDouble();
 
     for (int i = 0; i < lexems.size(); ++i) {
-
         userLexem=lexems.at(i);
         lexemPrecedence=precedence.value(userLexem).first;
         lexemAssociativity=precedence.value(userLexem).second;
@@ -166,37 +205,21 @@ double expEvaluator::evaluateExpression() {
 
         }
 
-        if (lexem=="sin") {
-            double result=0.0;
-            result=stack.pop().toDouble();
-            answer=sin(result);
-            stack.push(QString::number(answer));
+        if (lexem=="sin")
+            answer=calculateSin();
 
-        }
 
-        else if (lexem=="cos") {
-            double result=0.0;
-            result=stack.pop().toDouble();
-            answer=cos(result);
-            stack.push(QString::number(answer));
+        else if (lexem=="cos")
+            answer=calculateCos();
 
-        }
 
-        else if (lexem=="sqrt") {
-            double result=0.0;
-            result=stack.pop().toDouble();
-            answer=sqrt(result);
-            stack.push(QString::number(answer));
+        else if (lexem=="sqrt")
+            answer=calculateSqrt();
 
-        }
 
-        else if (lexem=="log") {
-            double result=0.0;
-            result=stack.pop().toDouble();
-            answer=log(result);
-            stack.push(QString::number(answer));
+        else if (lexem=="log")
+            answer=calculateLog();
 
-        }
 
         else if (lexem=="toRadians") {
             double result=0.0;

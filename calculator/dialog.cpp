@@ -36,7 +36,7 @@ Dialog::Dialog(QWidget *parent)
     completer=new QCompleter(wordList,this);
 
     completer->setCaseSensitivity(Qt::CaseInsensitive);
-   expressionInput->setCompleter(completer);
+    expressionInput->setCompleter(completer);
 
     // adds widgets to the layout
     mainLayout->addWidget(expressionOutput);
@@ -111,7 +111,7 @@ void Dialog::keyPressEvent(QKeyEvent *event)
 
                 variableValue=userExp.evaluateExpression();
 
-                  //expressionOutput->append(variableName+"="+variableValue);
+                //expressionOutput->append(variableName+"="+variableValue);
 
                 userVariables.insert(variableName,variableValue);
 
@@ -132,5 +132,4 @@ void Dialog::keyPressEvent(QKeyEvent *event)
 void Dialog::clearOutput() {
     expressionOutput->clear();
 }
-
 
