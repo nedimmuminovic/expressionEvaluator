@@ -56,37 +56,32 @@ Dialog::Dialog(QWidget *parent)
 
 }
 
+// destructor
 Dialog::~Dialog()
 {
 
 }
+
+
+
+
 
 // handles enter key press event
 void Dialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return){
 
-        QString expression=expressionInput->text();
-
-        int leftParenthesis=0;
-        int rightParenthesis=0;
-        leftParenthesis=expression.count("(");
-        rightParenthesis=expression.count(")");
-
         userVariables.insert("pi",3.14);
         userVariables.insert("e",2.718);
 
-        if (leftParenthesis!=rightParenthesis) {
-            QMessageBox mBox;
-            mBox.setText("Parenthesis missmatch!");
-            mBox.exec();
+        QString lexem;
+        bool parenthesis;
+        Lexer lexer(expressionInput->text());
+        expEvaluator userExp;
 
-        } else {
+        parenthesis=userExp.parenthesisCheck(expressionInput->text());
 
-            QString lexem;
-            Lexer lexer(expressionInput->text());
-            expEvaluator userExp;
-
+        if (parenthesis) {
 
             while(lexer.hasMoreLexems()) {
 
@@ -123,9 +118,8 @@ void Dialog::keyPressEvent(QKeyEvent *event)
 
         }
 
-
-
     }
+
 }
 
 // handles clear button click

@@ -78,6 +78,18 @@ public:
      */
     double evaluateExpression();
 
+    /*Method: parenthesisCheck()
+     *Usage:  expEvaluator userExp;
+     *              userExp.parenthesisCheck();
+     *- - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     * Counts the number of left parenthesis and the number of right parenthesis.
+     *If there is a parenthesis missmatch returns false
+     */
+
+    bool parenthesisCheck(QString userExpression);
+
+
+private:
 
     /*Method: isOperator(QString userExpression)
      *Usage:  isOperator(QString)
@@ -118,8 +130,6 @@ public:
     double calculateCos();
     double calculateLog();
 
-
-private:
 
     /*Shunting yard algorithm assigns each lexem precedence (integer from 2 to 4) and associativity (0 is left associativity 1 is right associativity)*/
     const int LEFT_ASSOC;

@@ -72,6 +72,23 @@ double expEvaluator::calculateLog(){
 
 }
 
+bool expEvaluator::parenthesisCheck(QString userExpression){
+
+    int leftParenthesis=0;
+    int rightParenthesis=0;
+    leftParenthesis=userExpression.count("(");
+    rightParenthesis=userExpression.count(")");
+
+    if (leftParenthesis!=rightParenthesis) {
+        QMessageBox mBox;
+        mBox.setText("Parenthesis missmatch!");
+        mBox.exec();
+        return false;
+
+    }
+    return true;
+
+}
 
 double expEvaluator::evaluateExpression() {
 
@@ -135,12 +152,15 @@ double expEvaluator::evaluateExpression() {
                 output.append(stack.pop());
             stack.pop();
 
-            if (isFunction(stack.top())) {
+
+            if (!stack.empty() && isFunction(stack.top())) {
                 output.append(stack.top());
                 stack.pop();
             }
 
         }
+
+
 
     } // end for
 
