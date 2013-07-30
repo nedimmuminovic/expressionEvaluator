@@ -71,9 +71,6 @@ void Dialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return){
 
-        userVariables.insert("pi",3.14);
-        userVariables.insert("e",2.718);
-
         QString lexem;
         bool parenthesis;
         Lexer lexer(expressionInput->text());
@@ -87,8 +84,9 @@ void Dialog::keyPressEvent(QKeyEvent *event)
 
                 lexem=lexer.nextLexem();
 
-                if (userVariables.contains(lexem))
-                    userExp.setLexems(QString::number(userVariables.value(lexem)));
+                // if lexem is in initialized variables
+                if (userExp.containsVariable(lexem))
+                    userExp.setLexems(QString::number(userExp.getVariable(lexem)));
                 else
                     userExp.setLexems(lexem);
 
@@ -108,7 +106,7 @@ void Dialog::keyPressEvent(QKeyEvent *event)
 
                 //expressionOutput->append(variableName+"="+variableValue);
 
-                userVariables.insert(variableName,variableValue);
+                userExp.setVariable(variableName,variableValue);
 
             }
 
@@ -121,6 +119,7 @@ void Dialog::keyPressEvent(QKeyEvent *event)
     }
 
 }
+
 
 // handles clear button click
 void Dialog::clearOutput() {
