@@ -28,20 +28,6 @@ bool expEvaluator::isFunction(QString userExpression) {
 
 }
 
-bool expEvaluator::containsVariable(QString userVariable) {
-    return userVariables.contains(userVariable);
-
-}
-
-double expEvaluator::getVariable(QString userVariable) {
-    return userVariables.value(userVariable);
-}
-
-void expEvaluator::setVariable(QString variableName,double variableValue) {
-    userVariables.insert(variableName,variableValue);
-}
-
-
 
 double expEvaluator::toRadians(double degrees) {
     return degrees*0.017453;

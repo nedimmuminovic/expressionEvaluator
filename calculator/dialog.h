@@ -28,6 +28,9 @@ private:
     QTextEdit* expressionOutput;
     QCompleter *completer;
 
+    /*holds variables declared by user */
+    QMap <QString,double> userVariables;
+
     /* holds list of functions for autocomplete*/
     QStringList wordList ;
 

@@ -39,7 +39,6 @@ public:
         precedence["-"]=QPair<int,int>(2,LEFT_ASSOC);
     }
 
-
     /*Method: setLexems(QString lexemValue)
      *Usage:  expEvaluator userExp;
      *              userExp.getLexem(int lexemIndex)
@@ -89,10 +88,6 @@ public:
 
     bool parenthesisCheck(QString userExpression);
 
-    bool containsVariable(QString userVariable);
-
-    double getVariable(QString userVariable);
-    void setVariable(QString variableName,double variableValue);
 
 private:
 
@@ -156,10 +151,5 @@ private:
     QList <QString> lexems;
 
 };
-
-/*holds variables declared by user */
-static QMap <QString,double> userVariables;
-
-
 
 #endif // EXPEVALUATOR_H
