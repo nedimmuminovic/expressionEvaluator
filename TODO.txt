@@ -1,5 +1,2 @@
 To do:
-- include more test cases for unit testing
-- improve variable assignment so it can handle cases such as 
-  a=1 a+2 should produce 7 
-  then a=6 a+2 should produce 8
+- multiple variable assignment Example: a=b=3

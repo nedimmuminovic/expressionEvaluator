@@ -18,6 +18,9 @@ Dialog::Dialog(QWidget *parent)
     : QDialog(parent)
 {
 
+    userVariables.insert("pi",3.14);
+    userVariables.insert("e",2.718);
+
     QVBoxLayout* mainLayout=new QVBoxLayout(this);
     QHBoxLayout* buttonLayout=new QHBoxLayout;
     QPushButton* clearButton=new QPushButton(tr("Clear"));
@@ -27,6 +30,20 @@ Dialog::Dialog(QWidget *parent)
 
     // user can't modify output
     expressionOutput->setReadOnly(true);
+    expressionOutput->setText("Usage examples\n"
+                              "a=10 \n"
+                              "a+5*2 \n"
+                              "a^2 \n"
+                              "sin(cos(1)) \n"
+                              "sin(cos(0.5+3)) \n"
+                              "1.25+1.5*3+1 \n"
+                              "-1-5-6 \n"
+                              "sqrt(9) \n"
+                              "log(10)\n"
+                              "sin(toRadians(30)) \n"
+                              "pi+3^2\n"
+                              "1+e"
+                              );
 
 
     expressionInput=new QLineEdit(tr("4+5-1*2"));
@@ -63,62 +80,62 @@ Dialog::~Dialog()
 }
 
 
-
-
-
 // handles enter key press event
 void Dialog::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return){
 
-        userVariables.insert("pi",3.14);
-        userVariables.insert("e",2.718);
-
         QString lexem;
-        bool parenthesis;
         Lexer lexer(expressionInput->text());
         expEvaluator userExp;
+        QString userInput = expressionInput->text();
+       bool parenthesis=userExp.parenthesisCheck(expressionInput->text());
 
-        parenthesis=userExp.parenthesisCheck(expressionInput->text());
+        if (userInput.count("=") > 1){
+            QMessageBox mBox;
+            mBox.setText("Found multiple = signs. Please use only one!");
+            mBox.exec();
 
-        if (parenthesis) {
+        } else if (parenthesis) {
 
             while(lexer.hasMoreLexems()) {
 
                 lexem=lexer.nextLexem();
 
-                if (userVariables.contains(lexem))
+                if (userVariables.contains(lexem) && !userInput.contains("="))
                     userExp.setLexems(QString::number(userVariables.value(lexem)));
                 else
                     userExp.setLexems(lexem);
 
             }
 
-            if (userExp.getLexem(1)=="=")
+            double result = 0;
 
-            {
-                QString variableName;
-                double variableValue;
+            QString variableName="";
 
-                variableName=userExp.getLexem(0);
-                userExp.removeLexem();
-                userExp.removeLexem();
+            if (userExp.lexems.length() > 1 && userExp.lexems[1] == "=") {
 
-                variableValue=userExp.evaluateExpression();
+                variableName = userExp.lexems[0];
+                userExp.lexems.removeFirst();
 
-                //expressionOutput->append(variableName+"="+variableValue);
+                userExp.lexems.removeFirst();
 
-                userVariables.insert(variableName,variableValue);
+                result = userExp.evaluateExpression();
+                userVariables.insert(variableName, result);
 
             }
 
-            QString answer=QString::number(userExp.evaluateExpression());
-            expressionOutput->append(answer);
+            else
 
+                result = userExp.evaluateExpression();
+
+
+            QString answer=QString::number(result);
+            expressionOutput->append(variableName+"="+answer);
 
         }
-
     }
+
 
 }
 

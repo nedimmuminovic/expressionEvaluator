@@ -14,3 +14,8 @@ Version 0.2.1
 - user can use degrees by typing sin(toRadians(5)) 
 - added test case
 
+Version 0.3
+- fixed variable assignment
+- added usage examples as help for new users
+
+

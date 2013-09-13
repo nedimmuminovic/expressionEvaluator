@@ -30,6 +30,7 @@ class expEvaluator
 {
 public:
 
+
     expEvaluator():LEFT_ASSOC(0),RIGHT_ASSOC(1)
     {
         precedence["^"]=QPair<int,int>(4,RIGHT_ASSOC);
@@ -88,6 +89,8 @@ public:
 
     bool parenthesisCheck(QString userExpression);
 
+    /* List of lexems formed from user input */
+    QList <QString> lexems;
 
 private:
 
@@ -131,6 +134,10 @@ private:
     double calculateLog();
 
 
+
+
+
+
     /*Shunting yard algorithm assigns each lexem precedence (integer from 2 to 4) and associativity (0 is left associativity 1 is right associativity)*/
     const int LEFT_ASSOC;
     const int RIGHT_ASSOC;
@@ -147,8 +154,6 @@ private:
     /* Used to store input in reverse polish notation*/
     QList <QString> output;
 
-    /* List of lexems formed from user input */
-    QList <QString> lexems;
 
 };
 

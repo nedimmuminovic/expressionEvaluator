@@ -14,7 +14,7 @@ class QPushButton;
 class Dialog : public QDialog
 {
     Q_OBJECT
-    
+
 public:
 
     Dialog(QWidget *parent = 0);
@@ -28,12 +28,12 @@ private:
     QTextEdit* expressionOutput;
     QCompleter *completer;
 
-    /*holds variables declared by user */
-    QMap <QString,double> userVariables;
 
     /* holds list of functions for autocomplete*/
     QStringList wordList ;
 
+    /*holds variables declared by user */
+       QMap <QString,double> userVariables;
 
 
 protected:
