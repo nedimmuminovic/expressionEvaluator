@@ -60,6 +60,7 @@ Dialog::Dialog(QWidget *parent)
     mainLayout->addWidget(expressionInput);
     mainLayout->addLayout(buttonLayout);
 
+
     // moves buttons to the right side
     buttonLayout->addStretch();
 
@@ -83,64 +84,67 @@ Dialog::~Dialog()
 // handles enter key press event
 void Dialog::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Return){
-
-        QString lexem;
-        Lexer lexer(expressionInput->text());
-        expEvaluator userExp;
-        QString userInput = expressionInput->text();
-       bool parenthesis=userExp.parenthesisCheck(expressionInput->text());
-
-        if (userInput.count("=") > 1){
-            QMessageBox mBox;
-            mBox.setText("Found multiple = signs. Please use only one!");
-            mBox.exec();
-
-        } else if (parenthesis) {
-
-            while(lexer.hasMoreLexems()) {
-
-                lexem=lexer.nextLexem();
-
-                if (userVariables.contains(lexem) && !userInput.contains("="))
-                    userExp.setLexems(QString::number(userVariables.value(lexem)));
-                else
-                    userExp.setLexems(lexem);
-
-            }
-
-            double result = 0;
-
-            QString variableName="";
-
-            if (userExp.lexems.length() > 1 && userExp.lexems[1] == "=") {
-
-                variableName = userExp.lexems[0];
-                userExp.lexems.removeFirst();
-
-                userExp.lexems.removeFirst();
-
-                result = userExp.evaluateExpression();
-                userVariables.insert(variableName, result);
-
-            }
-
-            else
-
-                result = userExp.evaluateExpression();
-
-
-            QString answer=QString::number(result);
-            expressionOutput->append(variableName+"="+answer);
-
-        }
-    }
-
+    if (event->key() == Qt::Key_Return)
+        showResult();
 
 }
 
 // handles clear button click
 void Dialog::clearOutput() {
     expressionOutput->clear();
+}
+
+void Dialog::showResult() {
+
+    QString lexem;
+    Lexer lexer(expressionInput->text());
+    expEvaluator userExp;
+    QString userInput = expressionInput->text();
+   bool parenthesis=userExp.parenthesisCheck(expressionInput->text());
+
+   if (userInput.count("=") > 1){
+       QMessageBox mBox;
+       mBox.setText("Found multiple = signs. Please use only one!");
+       mBox.exec();
+
+   } else if (parenthesis) {
+
+       while(lexer.hasMoreLexems()) {
+
+           lexem=lexer.nextLexem();
+
+           if (userVariables.contains(lexem) && !userInput.contains("="))
+               userExp.setLexems(QString::number(userVariables.value(lexem)));
+           else
+               userExp.setLexems(lexem);
+
+       }
+
+       double result = 0;
+
+       QString variableName="";
+
+       if (userExp.lexems.length() > 1 && userExp.lexems[1] == "=") {
+
+           variableName = userExp.lexems[0];
+           userExp.lexems.removeFirst();
+
+           userExp.lexems.removeFirst();
+
+           result = userExp.evaluateExpression();
+           userVariables.insert(variableName, result);
+
+       }
+
+       else
+
+           result = userExp.evaluateExpression();
+
+
+       QString answer=QString::number(result);
+       expressionOutput->append(variableName+"="+answer);
+
+   }
+
 }
 

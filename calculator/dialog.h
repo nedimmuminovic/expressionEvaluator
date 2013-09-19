@@ -35,6 +35,8 @@ private:
     /*holds variables declared by user */
        QMap <QString,double> userVariables;
 
+       void showResult();
+
 
 protected:
     void keyPressEvent(QKeyEvent * e);
